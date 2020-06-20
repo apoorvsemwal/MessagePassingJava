@@ -6,7 +6,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class exchange {
     public static void main(String[] args) {
         Map<String, List<String>> callRecordsMap = readCallRecordsAndPrintSummary();
-        BlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
         spawnMasterThread(callRecordsMap);
     }
 
