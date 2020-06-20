@@ -51,16 +51,12 @@ public class Person implements Runnable {
     public void initiateMessageTransfer(List<String> receivers) {
         for (String receiverName : receivers) {
             Person receiver = this.getPersonThreadMap().get(receiverName);
-            try {
-                Thread.sleep((long) (Math.random() * 100));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             sendIntroMessage(this.getPersonName(), receiver);
         }
     }
 
     private void sendIntroMessage(String personName, Person receiver) {
+        waitForARandomPeriod();
         long msgTimeStamp = System.currentTimeMillis();
         Message msg = new Message(personName, receiver.getPersonName(), msgTimeStamp, "intro");
         this.getMasterMsgQueue().add(msg);
@@ -68,6 +64,7 @@ public class Person implements Runnable {
     }
 
     private void sendReplyMessage() {
+        waitForARandomPeriod();
         Message introMsg = null;
         try {
             introMsg = this.getPersonMsgQueue().take();
@@ -77,5 +74,14 @@ public class Person implements Runnable {
         Message msg = new Message(this.getPersonName(), introMsg.getSender(), introMsg.getTimestamp(), "reply");
         this.getMasterMsgQueue().add(msg);
     }
+
+    private void waitForARandomPeriod() {
+        try {
+            Thread.sleep((long) (Math.random() * 100));
+        } catch (InterruptedException e) {
+            System.out.print("");
+        }
+    }
+
 
 }
